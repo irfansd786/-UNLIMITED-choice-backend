@@ -40,10 +40,10 @@ venv.bak/
 !.env.example
 
 # Databases
-*.db
 *.sqlite
 *.sqlite3
 database/*.db
+!database/varshi.db
 
 # Unit test / coverage
 .pytest_cache/

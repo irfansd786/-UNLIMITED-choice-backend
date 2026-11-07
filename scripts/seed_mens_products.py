@@ -2,13 +2,15 @@ import sqlite3
 import json
 import datetime
 
-con = sqlite3.connect('varshi.db')
-cur = con.cursor()
-
-# Get category IDs
-cat_rows = cur.execute("SELECT id, slug FROM categories WHERE is_active = 1").fetchall()
-cat_map = {row[1]: row[0] for row in cat_rows}
-print("Active categories:", cat_map)
+cat_map = {}
+try:
+    con = sqlite3.connect('varshi.db')
+    cur = con.cursor()
+    cat_rows = cur.execute("SELECT id, slug FROM categories WHERE is_active = 1").fetchall()
+    cat_map = {row[1]: row[0] for row in cat_rows}
+    print("Active categories:", cat_map)
+except Exception:
+    pass
 
 now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
 

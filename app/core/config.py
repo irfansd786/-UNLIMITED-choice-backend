@@ -44,7 +44,7 @@ class Settings(BaseSettings):
         "http://localhost:5174",
         "http://127.0.0.1:5173",
         "http://127.0.0.1:5174",
-        "https://unlimited-choice-customer.vercel.app",
+        "https://unlimited-choice-customer.vercel.app",'https://unlimited-choice-customer-git-main-irfansd786s-projects.vercel.app'
         "http://unlimited-choice-customer.vercel.app",
         "https://varshienterprises.com",
         "https://admin.varshienterprises.com",

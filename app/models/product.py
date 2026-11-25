@@ -23,7 +23,7 @@ class Product(Base):
     low_stock_threshold = Column(Integer, default=5, nullable=False)
     
     status = Column(String(50), default="PUBLISHED", nullable=False) # DRAFT, PUBLISHED, ARCHIVED
-    brand = Column(String(100), default="Varshi Enterprises", nullable=False)
+    brand = Column(String(100), default="UNLIMITED choice", nullable=False)
     material = Column(String(100), nullable=True)
     specifications = Column(JSON, default=dict, nullable=False) # e.g. {"Fabric": "Pure Silk", "Weave": "Kalamkari Handblock", "Care": "Dry Clean"}
     

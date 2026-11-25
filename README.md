@@ -77,7 +77,7 @@ backend/
 
 ## 📡 API Endpoints Reference
 
-Base URL: `http://localhost:8000/api`
+Base URL: `https://unlimited-choice-backend.onrender.com/api`
 
 | Prefix | Method | Description |
 | :--- | :--- | :--- |
@@ -133,6 +133,6 @@ pip install -r backend/requirements.txt
 backend\venv\Scripts\python -m uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-* **API Health Check**: `http://localhost:8000/health`
-* **Interactive Swagger UI**: `http://localhost:8000/docs`
-* **Alternative ReDoc UI**: `http://localhost:8000/redoc`
+* **API Health Check**: `https://unlimited-choice-backend.onrender.com/health`
+* **Interactive Swagger UI**: `https://unlimited-choice-backend.onrender.com/docs`
+* **Alternative ReDoc UI**: `https://unlimited-choice-backend.onrender.com/redoc`

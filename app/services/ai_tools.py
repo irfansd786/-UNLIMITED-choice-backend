@@ -397,7 +397,7 @@ def execute_tool(tool_name: str, arguments: Dict[str, Any], db: Session) -> Dict
         compare_at_price = arguments.get("compare_at_price")
         stock = int(arguments.get("stock", 0))
         cat_str = arguments.get("category", "Hoodies").strip()
-        description = arguments.get("description") or f"Crafted with heavyweight luxury material, designed for streetwear elegance by Varshi Enterprises."
+        description = arguments.get("description") or f"Crafted with heavyweight luxury material, designed for streetwear elegance by UNLIMITED choice."
         sizes = arguments.get("sizes") or ["S", "M", "L", "XL"]
         color = arguments.get("color") or "Standard"
         material = arguments.get("material") or "100% Heavy French Terry Cotton"
@@ -427,7 +427,7 @@ def execute_tool(tool_name: str, arguments: Dict[str, Any], db: Session) -> Dict
             "sizes": sizes,
             "color": color,
             "material": material,
-            "brand": "Varshi Enterprises",
+            "brand": "UNLIMITED choice",
             "image_url": "/images/variants/classic-cream-supima-boxy-tee_original_front.webp"
         }
 
@@ -493,9 +493,9 @@ def execute_confirmed_action(action_type: str, payload: Dict[str, Any], db: Sess
             stock=int(payload.get("stock", 0)),
             low_stock_threshold=5,
             status="PUBLISHED",
-            brand=payload.get("brand", "Varshi Enterprises"),
+            brand=payload.get("brand", "UNLIMITED choice"),
             material=payload.get("material", "100% Premium Cotton"),
-            short_description=f"{name} by Varshi Enterprises.",
+            short_description=f"{name} by UNLIMITED choice.",
             description=payload.get("description", ""),
             is_new_arrival=True,
             is_featured=True,

@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 from typing import List, Dict, Any, Optional, Tuple
 import groq
 
@@ -8,7 +9,12 @@ from app.services.ai_tools import GROQ_TOOL_DEFINITIONS, execute_tool
 
 logger = logging.getLogger("varshi_groq")
 
-SYSTEM_PROMPT = f"""You are the personal AI Business Manager and Executive Operations Assistant for Varshi Enterprises, an ultra-premium menswear and streetwear luxury e-commerce house.
+def _sanitize_brand(text: str) -> str:
+    if not text:
+        return text
+    return re.sub(r"varshi\s+enterprises", "UNLIMITED choice", text, flags=re.IGNORECASE)
+
+SYSTEM_PROMPT = f"""You are the personal AI Business Manager and Executive Operations Assistant for UNLIMITED choice, an ultra-premium menswear and streetwear luxury e-commerce house.
 You speak with the authorized store owner / administrator (addressed respectfully as '{settings.ADMIN_PREFERRED_TITLE}').
 
 CORE OPERATING PRINCIPLES:
@@ -59,7 +65,7 @@ def generate_daily_briefing_summary(kpis: Dict[str, Any], admin_name: str = "Chi
             greeting_prefix = f"Good day, {admin_name}"
 
     briefing_system_prompt = (
-        "You are the personal AI Business Manager for Varshi Enterprises, an ultra-premium menswear brand. "
+        "You are the personal AI Business Manager for UNLIMITED choice, an ultra-premium menswear brand. "
         "Your task is to synthesize the verified store metrics provided by the database into a crisp, polished, "
         "natural executive morning briefing for the store leader. Never invent numbers; use the exact figures provided. "
         "Keep the briefing concise (under 60 words) and pleasant, optimized for spoken voice audio."
@@ -90,7 +96,7 @@ Requirements:
             temperature=0.3,
             max_tokens=400
         )
-        content = completion.choices[0].message.content.strip()
+        content = _sanitize_brand(completion.choices[0].message.content.strip())
         if content:
             return content
     except Exception as e:
@@ -207,7 +213,7 @@ def run_groq_conversation(
             continue
         else:
             # Final text response reached
-            final_content = msg.content or "Chief, I have reviewed the store data."
+            final_content = _sanitize_brand(msg.content or "Chief, I have reviewed the store data.")
             return {
                 "assistant_response": final_content,
                 "action_type": action_type,

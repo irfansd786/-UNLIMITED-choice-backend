@@ -51,7 +51,7 @@ class ProductBase(BaseModel):
     stock: int = 0
     low_stock_threshold: int = 5
     status: str = "PUBLISHED"
-    brand: str = "Varshi Enterprises"
+    brand: str = "UNLIMITED choice"
     material: Optional[str] = None
     specifications: Dict[str, Any] = Field(default_factory=dict)
     is_featured: bool = False

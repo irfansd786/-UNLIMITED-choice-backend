@@ -1,7 +1,18 @@
+import logging
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import declarative_base, sessionmaker
-from app.core.config import settings
+from app.core.config import settings, CANONICAL_DB_PATH
+
+logger = logging.getLogger("varshi_enterprises")
+
+def _create_sqlite_engine(sqlite_url: str):
+    if "sqlite:///" in sqlite_url:
+        db_file = sqlite_url.replace("sqlite:///", "")
+        db_dir = os.path.dirname(db_file)
+        if db_dir:
+            os.makedirs(db_dir, exist_ok=True)
+    return create_engine(sqlite_url, connect_args={"check_same_thread": False})
 
 db_url = settings.DATABASE_URL
 if db_url.startswith("postgres://"):
@@ -18,22 +29,27 @@ if db_url.startswith("postgresql://") and not db_url.startswith("postgresql+"):
         except ImportError:
             pass
 
-connect_args = {}
 if "sqlite" in db_url:
-    connect_args = {"check_same_thread": False}
-    if "sqlite:///" in db_url:
-        db_file = db_url.replace("sqlite:///", "")
-        db_dir = os.path.dirname(db_file)
-        if db_dir:
-            os.makedirs(db_dir, exist_ok=True)
-    engine = create_engine(db_url, connect_args=connect_args)
+    engine = _create_sqlite_engine(db_url)
 else:
-    engine = create_engine(
-        db_url,
-        pool_pre_ping=True,
-        pool_size=10,
-        max_overflow=20,
-    )
+    try:
+        pg_engine = create_engine(
+            db_url,
+            pool_pre_ping=True,
+            pool_size=10,
+            max_overflow=20,
+            connect_args={"connect_timeout": 3},
+        )
+        with pg_engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        engine = pg_engine
+    except Exception as exc:
+        logger.warning(
+            "PostgreSQL unavailable (%s); falling back to SQLite at %s",
+            exc,
+            CANONICAL_DB_PATH,
+        )
+        engine = _create_sqlite_engine(f"sqlite:///{CANONICAL_DB_PATH}")
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
